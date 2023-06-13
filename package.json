@@ -1,13 +1,16 @@
 {
-    "name": "ecomm",
-    "version": "1.0.0",
-    "description": "",
-    "main": "src/main.js",
-    "scripts": {
-      "start": "node src/main.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "MIT"
+  "name": "ecomm",
+  "version": "1.0.0",
+  "description": "Projeto de Ecommerce criando durante o programa LevelUp da Alura",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "cli": "node src/cli/cli.js ./src/cli/db.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriela Marchiori",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.2.0"
   }
-
+}
