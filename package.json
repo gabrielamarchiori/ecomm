@@ -5,7 +5,6 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "cli": "node src/cli/cli.js ./src/cli/db.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gabriela Marchiori",
