@@ -31,19 +31,24 @@
       "status": "INATIVA"
     },
     {
-      "nome": "AUTOMOTIVA",
+      "nome": "AUTOMÓVEIS",
       "status": "ATIVA",
       "id": 7
-    },
-    {
-      "id": 8,
-      "nome": "LIVROS",
-      "status": "ATIVA"
     },
     {
       "nome": "sspato",
       "status": "ATIVA",
       "id": 11
+    },
+    {
+      "nome": "VESTUÁRIO",
+      "status": "ATIVA",
+      "id": 12
+    },
+    {
+      "nome": "VESTUÁRIO",
+      "status": "ATIVA",
+      "id": 13
     }
   ]
 }
