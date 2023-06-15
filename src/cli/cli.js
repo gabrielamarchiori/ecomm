@@ -20,15 +20,31 @@ async function processarComandos(args) {
     }
     
     if(caminho === '--inserirCategoria'){
-        const file = args[3]
-        fs.writeFileSync(file, await categoryService.createCategory() )
-        .catch(error => console.log('erro', error))
+        try {
+            const file = args[3]
+            const response = await categoryService.createCategory()
+            const myData = JSON.stringify(response)
+            fs.writeFileSync(file, myData)
+        }
+        catch (erro) {
+            console.log(erro)
+        }
     }
+    
     if(caminho === '--atualizarCategoria'){
-        const id = args[3]
-        categoryService.updateCategory(id)
-        .catch(error => console.log('erro', error))
+        try {
+            const id = args[3]
+            const file = args[4]
+            const response = await categoryService.updateCategory(id)
+            console.log(response)
+            const myData = JSON.stringify(response)
+            fs.writeFileSync(file, myData)
+        }
+        catch (erro) {
+            console.log(erro)
+        }
     }
+    
     if(caminho === '--excluirCategoria'){
         const id = args[3]
         categoryService.deleteCategory(id)

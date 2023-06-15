@@ -48,6 +48,9 @@ async function createCategory () {
         const responseData = await response.json()
                 
         console.log(`Response status: ${chalk.yellow(status)}`, responseData)
+
+        return responseData
+        
     }
     catch (error) {
         console.log(error)
@@ -68,6 +71,8 @@ async function updateCategory (id) {
         const responseData = await response.json()
 
         console.log(`Response status: ${chalk.yellow(status)}` ,`response data:`, responseData)
+
+        return responseData
         
     }
     catch (error) {
