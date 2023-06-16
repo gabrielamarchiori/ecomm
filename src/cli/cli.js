@@ -1,28 +1,27 @@
 import process from 'node:process'
-import categoryService from "./CategoryService.js"
+import CategoryService from './CategoryService.js';
 import fs from 'fs'
 
 const caminho = process.argv;
-console.log(caminho)
 
 async function processarComandos(args) {
     const caminho = args[2];
 
     if (caminho === '--listarCategorias') {
-        categoryService.findCategories()
+        CategoryService.findCategories()
         .catch(error => console.log('erro', error))
     }
     
     if(caminho === '--recuperarCategoriaPorId' && args[3]){
         const id = args[3]
-        categoryService.findCategoryById(id)
+        CategoryService.findCategoryById(id)
         .catch(error => console.log('erro', error))
     }
     
     if(caminho === '--inserirCategoria'){
         try {
             const file = args[3]
-            const response = await categoryService.createCategory()
+            const response = await CategoryService.createCategory()
             const myData = JSON.stringify(response)
             fs.writeFileSync(file, myData)
         }
@@ -35,7 +34,7 @@ async function processarComandos(args) {
         try {
             const id = args[3]
             const file = args[4]
-            const response = await categoryService.updateCategory(id)
+            const response = await CategoryService.updateCategory(id)
             console.log(response)
             const myData = JSON.stringify(response)
             fs.writeFileSync(file, myData)
@@ -47,10 +46,9 @@ async function processarComandos(args) {
     
     if(caminho === '--excluirCategoria'){
         const id = args[3]
-        categoryService.deleteCategory(id)
+        CategoryService.deleteCategory(id)
         .catch(error => console.log('erro', error))
     }
-    
 }
 
 processarComandos(caminho);

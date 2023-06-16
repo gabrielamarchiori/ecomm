@@ -34,6 +34,8 @@ paths:
     post:
       tags: 
         - categories
+      security: 
+      - auth: []
       summary: Cria nova Categoria
       description: "Através dessa endpoint você pode criar novas categorias"
       requestBody:
@@ -51,13 +53,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
   /api/categories/{id}:
     parameters: 
     - name: id
       in: path
       schema:
         type: string
-        format: objectId
+        format: uuid
       required: true
     get:
       tags: 
@@ -75,21 +82,15 @@ paths:
           content:
             application/json:
               example: "Categoria não encontrada"
-    delete:
-      security: 
-      - auth: []
-      tags: 
-        - categories
-      summary: Deleta categoria por ID
-      responses:
-        '204':
-          description: Categoria deletada com sucesso
-        '404':
-          description: Categoria não encontrada
-          content:
-            application/json:
-              example: "Categoria não encontrada"
+  /api/admin/categories/{id}:
     patch:
+      parameters: 
+      - name: id
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
       security: 
       - auth: []
       tags: 
@@ -117,7 +118,69 @@ paths:
           content:
             application/json:
               example: "categoria não encontrada"
-  /api/products:
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+    delete:
+      parameters: 
+      - name: id
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+      security: 
+      - auth: []
+      tags: 
+        - categories
+      summary: Deleta categoria por ID
+      responses:
+        '204':
+          description: Categoria deletada com sucesso
+        '404':
+          description: Categoria não encontrada
+          content:
+            application/json:
+              example: "Categoria não encontrada"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+  /api/admin/categories/{id}/status:
+    patch:
+      parameters: 
+      - name: id
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+      security: 
+      - auth: []
+      tags: 
+        - categories
+      summary: Muda o status da categoria
+      responses:
+        200:
+          description: "Status da categoria atualizado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        '404':
+          description: categoria não encontrada
+          content:
+            application/json:
+              example: "categoria não encontrada"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+  /api/admin/products:
     post:
       security: 
         - auth: []
@@ -143,7 +206,7 @@ paths:
                   type: integer
                 categoria:
                   type: string
-                  format: ObjectId
+                  format: uuid
       responses:
         201:
           description: Sucesso
@@ -151,10 +214,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+  /api/products:
     get:
       tags:
         - products
       summary: Busca todos os produtos existentes na loja
+      parameters: 
+        - in: query
+          name: preco_min
+          schema:
+            type: integer
+          description: Valor mínimo de preço buscado
+        - in: query
+          name: preco_max
+          schema:
+            type: integer
+          description: Valor máximo de preço buscado
+        - in: query
+          name: categoria
+          schema:
+            type: string
+          description: Categoria da busca
+        - in: query
+          name: estoque_min
+          schema:
+            type: integer
+          description: O estoque tem um valor maior que o valor determinado
       responses:
         200:
           description: Sucesso
@@ -168,7 +258,7 @@ paths:
       in: path
       schema:
         type: string
-        format: ObjectId
+        format: uuid
       required: true
     get:
       tags: 
@@ -186,6 +276,15 @@ paths:
           content:
             application/json:
               example: "Produto não encontrado"
+    
+  /api/admin/products/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
     patch:
       security: 
       - auth: []
@@ -211,7 +310,7 @@ paths:
                   type: integer
                 categoria:
                   type: string
-                  format: ObjectId
+                  format: uuid
       responses:
         200:
           description: "Sucesso"
@@ -224,6 +323,11 @@ paths:
           content:
             application/json:
               example: "Produto não encontrado"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
     delete:
       security: 
       - auth: []
@@ -238,12 +342,17 @@ paths:
           content:
             application/json:
               example: "Produto não encontrada"
-  /api/users:
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+  /api/admin/accounts:
     post:
       security:
         - auth: []
       tags:
-        - users
+        - accounts
       summary: Cria novo usuário
       requestBody:
         content:
@@ -284,12 +393,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/Account"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
     get:
       security: 
         - auth: []
       tags:
-        - users
+        - accounts
       summary: Busca todos os usuários cadastrados na loja
       responses:
         200:
@@ -297,18 +411,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Users"
-  /api/users/{id}:
+                $ref: "#/components/schemas/Accounts"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
+  /api/accounts/{id}:
     parameters:
     - name: id
       in: path
       schema:
         type: string
-        format: ObjectId
+        format: uuid
       required: true
     get:
       tags:
-        - users
+        - accounts
       summary: Busca usuário pelo ID
       responses: 
         200:
@@ -316,17 +435,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/Account"
         '404':
           description: Usuário não encontrado
           content:
             application/json:
               example: "Usuário não encontrado"
+  /api/admin/accounts/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
     patch:
       security: 
         - auth: []
       tags:
-        - users
+        - accounts
       summary: Edita as informações do usuário
       requestBody:
         content:
@@ -367,17 +494,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/Account"
         '404':
           description: Usuário não encontrado
           content:
             application/json:
-              example: "Usuário não encontradp"
+              example: "Usuário não encontrado"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
     delete:
       security:
         - auth: []
       tags:
-        - users
+        - accounts
       summary: Deleta usuário por ID
       responses:
         '204':
@@ -387,6 +519,11 @@ paths:
           content:
             application/json:
               example: "Usuário não encontrado"
+        '403':
+          description: você não tem permissão de administrador 
+          content:
+            application/json:
+              example: "você não tem permissão de administrador"
   /api/orders:
     post:
       tags:
@@ -404,7 +541,7 @@ paths:
                   properties:
                     accountId:
                       type: string
-                      format: ObjectId
+                      format: uuid
                 enderecoEntrega:
                   type: object
                   properties:
@@ -427,7 +564,7 @@ paths:
                     properties:
                       productId:
                         type: string
-                        format: ObjectId
+                        format: uuid
                       quantidade:
                         type: integer
                       desconto: 
@@ -450,11 +587,24 @@ paths:
       in: path
       schema:
         type: string
-        format: objectId
+        format: uuid
       required: true
     get:
       tags:
         - orders
+      summary: Busca pedido por ID
+      responses: 
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        '404':
+          description: Pedido não encontrado
+          content:
+            application/json:
+              example: "Pedido não encontrado"
     
 components:
   schemas:
@@ -463,7 +613,7 @@ components:
       properties:
         id: 
           type: string
-          format: objectId
+          format: uuid
         nome: 
           type: string
         status:
@@ -477,7 +627,7 @@ components:
       properties:
         id: 
           type: string
-          format: objectId
+          format: uuid
         nome: 
           type: string
         descricao:
@@ -495,12 +645,12 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Product"
-    User:
+    Account:
       type: object
       properties:
         id:
           type: string
-          format: ObjectId
+          format: uuid
         nome:
           type: string
         email:
@@ -529,16 +679,16 @@ components:
               type: string
             uf:
               type: string
-    Users:
+    Accounts:
       type: array
       items:
-        $ref: "#/components/schemas/User"
+        $ref: "#/components/schemas/Account"
     Order:
       type: object
       properties:
         id: 
           type: string
-          format: ObjectId
+          format: uuid
         dataPedido:
           type: string
           format: date-time
@@ -547,7 +697,7 @@ components:
           properties:
             accountId:
               type: string
-              format: ObjectId
+              format: uuid
             nome:
               type: string
         enderecoEntrega:
@@ -570,19 +720,21 @@ components:
         itens:
           type: array
           items:
-            type: object
-            properties:
-                productId:
-                  type: string
-                  format: ObjectId
-                quantidade:
-                  type: integer
-                desconto: 
-                  type: number
-                  format: double
-                precoUnitario: 
-                  type: number
-                  format: float
+            oneOf:
+              - type: string
+              - type: object
+                properties:
+                  productId:
+                    type: string
+                    format: uuid
+                  quantidade:
+                    type: integer
+                  desconto: 
+                    type: number
+                    format: double
+                  precoUnitario: 
+                    type: number
+                    format: float
   securitySchemes:
     auth:
       type: http
