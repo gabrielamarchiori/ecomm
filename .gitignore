@@ -104,3 +104,4 @@ dist
 .tern-port
 
 db-mongo-ecomm
+node_modules
