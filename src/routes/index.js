@@ -3,7 +3,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line linebreak-style
 import express from 'express';
-import categories from './categorias.routes.js';
+import categories from './categories.routes.js';
 
 const routes = ((app) => {
   app.route('/').get((req, res) => {

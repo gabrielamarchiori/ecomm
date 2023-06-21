@@ -10,6 +10,9 @@ const router = express.Router();
 router
   .get('/categories', CategoryController.listCategories)
   .get('/categories/:id', CategoryController.categoryDetail)
-  .post('/categories', CategoryController.createCategory);
+  .post('/categories', CategoryController.createCategory)
+  .put('/categories/:id', CategoryController.updateCategory)
+  .put('/categories/:id/status', CategoryController.updateStatusCategory)
+  .delete('/categories/:id', CategoryController.deleteCategory);
 
 export default router;
