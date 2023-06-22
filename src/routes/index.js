@@ -4,6 +4,7 @@
 // eslint-disable-next-line linebreak-style
 import express from 'express';
 import categories from './categories.routes.js';
+import products from './products.routes.js';
 
 const routes = ((app) => {
   app.route('/').get((req, res) => {
@@ -13,6 +14,7 @@ const routes = ((app) => {
   app.use(
     express.json(),
     categories,
+    products,
   );
 });
 

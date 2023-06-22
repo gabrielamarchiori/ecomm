@@ -6,8 +6,13 @@ const categoriesSchema = new mongoose.Schema(
 
   {
     id: { type: mongoose.Types.ObjectId },
-    name: { type: String, minLength: 3, required: true },
+    name: {
+      type: String, minLength: 3, enum: ['AUTOMOTIVA', 'CELULARES', 'INFORMÁTICA', 'LIVROS', 'MÓVEIS', 'TESTE'], required: true,
+    },
     status: { type: String, enum: ['ATIVA', 'INATIVA'], default: 'ATIVA' },
+  },
+  {
+    versionKey: false,
   },
 );
 

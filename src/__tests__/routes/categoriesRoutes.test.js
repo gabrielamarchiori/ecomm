@@ -7,7 +7,7 @@ import {
 import app from '../../app';
 
 const mockedCategory = {
-  name: 'Categoria Teste',
+  name: 'TESTE',
 };
 
 let server;
@@ -50,7 +50,7 @@ describe('GET em /categories', () => {
       .expect(200);
 
     const index = response.body.length;
-    expect(response.body[index - 1].name).toEqual('Categoria Teste');
+    expect(response.body[index - 1].name).toEqual('TESTE');
   });
 });
 describe('GET em /categories/id', () => {
@@ -82,7 +82,7 @@ describe('PUT em /categories/id', () => {
       .expect(404);
   });
 });
-describe('DELEYE em /categories/id', () => {
+describe('DELETE em /categories/id', () => {
   test('Deve deletar a categoria requerida pelo ID', async () => {
     await request(app)
       .delete(`/categories/${idResponse}`)

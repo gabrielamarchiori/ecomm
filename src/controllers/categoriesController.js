@@ -15,7 +15,7 @@ class CategoryController {
       const categoryFound = await categories.findById(id);
       res.status(200).json(categoryFound);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(404).json(error.message);
     }
   };
@@ -45,7 +45,7 @@ class CategoryController {
       const updatedCategory = await categories.findByIdAndUpdate(id, updatedDatas, { new: true });
       res.status(200).json(updatedCategory);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(404).json(error.message);
     }
   };
@@ -60,7 +60,7 @@ class CategoryController {
       const categoryActivated = await categories.findByIdAndUpdate(id, { status: 'ATIVA' }, { new: true });
       res.status(200).json(categoryActivated);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(404).json(error.message);
     }
   };
@@ -71,7 +71,7 @@ class CategoryController {
       await categories.findByIdAndDelete(id);
       res.status(204).json({});
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(404).json(error.message);
     }
   };
